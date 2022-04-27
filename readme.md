@@ -60,3 +60,4 @@ $ terraform destroy -auto-approve
 3- Check the logs of Client Lambda function, you should see ```---- Result of The Processed Application ----```<br><br>
 <img src="./readme_assets/client_logs.png" style="display: block; margin-left: auto; margin-right: auto;">
 <br><br>
+4- Check the Other Lambda function logs, To see the events being processed.
