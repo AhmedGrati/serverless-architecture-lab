@@ -7,6 +7,7 @@ locals {
   commercial_management_zip_location = "outputs/commercial_management.zip"
   risk_management_zip_location = "outputs/risk_management.zip"
   ocr_zip_location = "outputs/ocr.zip"
+  client_zip_location = "outputs/client.zip"
 }
 resource "aws_lambda_function" "application_management_lambda" {
   filename         = local.application_management_zip_location
@@ -55,6 +56,34 @@ resource "aws_lambda_function" "ocr" {
     aws_iam_policy_attachment.lambda_logs
   ]
 }
+
+resource "aws_lambda_function" "client_lambda" {
+  filename         = local.client_zip_location
+  function_name    = "client"
+  role             = aws_iam_role.iam_for_lambda.arn
+  handler          = "client.handle"
+  runtime          = "python3.9"
+  source_code_hash = filebase64sha256(local.client_zip_location)
+  depends_on = [
+    aws_iam_policy_attachment.lambda_logs
+  ]
+}
+resource "aws_lambda_permission" "allow_cloudwatch_trigger_application_lambda" {
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.application_management_lambda.arn
+  principal = "events.amazonaws.com"
+  source_arn = var.cloudwatch-event-trigger-app-management-arn
+  statement_id = "AllowInvokationFromCloudWatchEvent"
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_trigger_commercial_lambda" {
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.commercial_management_lambda.arn
+  principal = "events.amazonaws.com"
+  source_arn = var.cloudwatch-event-trigger-commercial-management-arn
+  statement_id = "AllowInvokationFromCloudWatchEvent"
+}
+
 resource "aws_iam_policy" "lambda_logging" {
   name        = "lambda_logging"
   path        = "/"
