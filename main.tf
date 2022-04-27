@@ -15,6 +15,7 @@ module "lambda" {
   cloudwatch-event-trigger-app-management-arn = module.event-bridge.cloudwatch-event-trigger-app-management-arn
   cloudwatch-event-trigger-commercial-management-arn = module.event-bridge.cloudwatch-event-trigger-commercial-management-arn
   cloudwatch-event-trigger-risk-management-arn = module.event-bridge.cloudwatch-event-trigger-risk-management-arn
+  cloudwatch-event-trigger-ocr-management-arn = module.event-bridge.cloudwatch-event-trigger-ocr-management-arn
 }
 
 module "cloudwatch" {
@@ -25,4 +26,5 @@ module "event-bridge" {
   application-management-arn = module.lambda.application-management-arn
   commercial-management-arn  = module.lambda.commercial-management-arn
   risk-management-arn = module.lambda.risk-management-arn
+  ocr-management-arn = module.lambda.ocr-management-arn
 }

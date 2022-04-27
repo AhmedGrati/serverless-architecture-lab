@@ -1,2 +1,2 @@
 def handle(event, context):
-    print("Hello World")
+    print(event)

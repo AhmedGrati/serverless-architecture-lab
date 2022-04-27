@@ -8,3 +8,6 @@ output "commercial-management-arn" {
 output "risk-management-arn" {
   value = aws_lambda_function.risk_management_lambda.arn
 }
+output "ocr-management-arn" {
+  value = aws_lambda_function.ocr.arn
+}

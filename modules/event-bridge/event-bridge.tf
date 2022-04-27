@@ -37,6 +37,18 @@ resource "aws_cloudwatch_event_rule" "risk_lambda_event_rule" {
 
 EOF
 }
+resource "aws_cloudwatch_event_rule" "ocr_lambda_event_rule" {
+  name        = "ocr-event-requested"
+  description = "OCR Lambda Microservice Event Rule"
+
+  event_pattern = <<EOF
+    {
+      "detail-type": ["ocr-event-requested"],
+      "source": ["client.events"]
+    }
+
+EOF
+}
 
 resource "aws_cloudwatch_event_permission" "allow_client_lambda_put_event" {
   action       = "events:PutEvents"
@@ -58,4 +70,9 @@ resource "aws_cloudwatch_event_target" "risk-managament-lambda-event-target" {
   rule      = aws_cloudwatch_event_rule.risk_lambda_event_rule.name
   target_id = "RiskManagementId"
   arn       = var.risk-management-arn
+}
+resource "aws_cloudwatch_event_target" "ocr-managament-lambda-event-target" {
+  rule      = aws_cloudwatch_event_rule.ocr_lambda_event_rule.name
+  target_id = "OCRManagementId"
+  arn = var.ocr-management-arn
 }

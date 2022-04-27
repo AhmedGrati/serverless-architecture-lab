@@ -8,3 +8,6 @@ variable "commercial-management-arn" {
 variable "risk-management-arn" {
   
 }
+variable "ocr-management-arn" {
+  
+}
