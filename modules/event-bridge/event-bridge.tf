@@ -19,7 +19,7 @@ resource "aws_cloudwatch_event_rule" "commercial_lambda_event_rule" {
   event_pattern = <<EOF
     {
       "detail-type": ["commercial-event-requested"],
-      "source": ["client.events"]
+      "source": ["application.events"]
     }
 
 EOF
@@ -32,7 +32,7 @@ resource "aws_cloudwatch_event_rule" "risk_lambda_event_rule" {
   event_pattern = <<EOF
     {
       "detail-type": ["risk-event-requested"],
-      "source": ["client.events"]
+      "source": ["commercial.events"]
     }
 
 EOF
@@ -44,12 +44,24 @@ resource "aws_cloudwatch_event_rule" "ocr_lambda_event_rule" {
   event_pattern = <<EOF
     {
       "detail-type": ["ocr-event-requested"],
-      "source": ["client.events"]
+      "source": ["risk.events"]
     }
 
 EOF
 }
 
+resource "aws_cloudwatch_event_rule" "client_lambda_event_rule" {
+  name        = "application-response-event"
+  description = "Client Lambda Microservice Event Rule"
+
+  event_pattern = <<EOF
+    {
+      "detail-type": ["application-response-event"],
+      "source": ["ocr.events"]
+    }
+
+EOF
+}
 resource "aws_cloudwatch_event_permission" "allow_client_lambda_put_event" {
   action       = "events:PutEvents"
   principal    = "*"
@@ -75,4 +87,9 @@ resource "aws_cloudwatch_event_target" "ocr-managament-lambda-event-target" {
   rule      = aws_cloudwatch_event_rule.ocr_lambda_event_rule.name
   target_id = "OCRManagementId"
   arn = var.ocr-management-arn
+}
+resource "aws_cloudwatch_event_target" "client-lambda-event-target" {
+  rule      = aws_cloudwatch_event_rule.client_lambda_event_rule.name
+  target_id = "OCRManagementId"
+  arn = var.client-arn
 }

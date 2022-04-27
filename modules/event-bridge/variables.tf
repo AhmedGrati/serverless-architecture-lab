@@ -11,3 +11,6 @@ variable "risk-management-arn" {
 variable "ocr-management-arn" {
   
 }
+variable "client-arn" {
+  
+}

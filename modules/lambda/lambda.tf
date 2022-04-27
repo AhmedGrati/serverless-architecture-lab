@@ -97,6 +97,13 @@ resource "aws_lambda_permission" "allow_cloudwatch_trigger_ocr_lambda" {
   source_arn = var.cloudwatch-event-trigger-ocr-management-arn
   statement_id = "AllowInvokationFromCloudWatchEvent"
 }
+resource "aws_lambda_permission" "allow_cloudwatch_trigger_client_lambda" {
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.client_lambda.arn
+  principal = "events.amazonaws.com"
+  source_arn = var.cloudwatch-event-trigger-client-arn
+  statement_id = "AllowInvokationFromCloudWatchEvent"
+}
 
 resource "aws_iam_policy" "lambda_logging" {
   name        = "lambda_logging"

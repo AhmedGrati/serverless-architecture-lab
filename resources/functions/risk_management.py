@@ -8,7 +8,7 @@ def handle(event, context):
         entries = [
         {
             'DetailType': 'ocr-event-requested',
-            'Source': 'client.events',
+            'Source': 'risk.events',
             'Detail': '{ \"id\": \"123\"}'
         }
         ]

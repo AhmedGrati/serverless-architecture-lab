@@ -11,3 +11,6 @@ output "risk-management-arn" {
 output "ocr-management-arn" {
   value = aws_lambda_function.ocr.arn
 }
+output "client-arn" {
+  value = aws_lambda_function.client_lambda.arn
+}
