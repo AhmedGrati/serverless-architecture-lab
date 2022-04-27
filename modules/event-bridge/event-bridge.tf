@@ -25,6 +25,19 @@ resource "aws_cloudwatch_event_rule" "commercial_lambda_event_rule" {
 EOF
 }
 
+resource "aws_cloudwatch_event_rule" "risk_lambda_event_rule" {
+  name        = "risk-event-requested"
+  description = "Risk Lambda Microservice Event Rule"
+
+  event_pattern = <<EOF
+    {
+      "detail-type": ["risk-event-requested"],
+      "source": ["client.events"]
+    }
+
+EOF
+}
+
 resource "aws_cloudwatch_event_permission" "allow_client_lambda_put_event" {
   action       = "events:PutEvents"
   principal    = "*"
@@ -40,4 +53,9 @@ resource "aws_cloudwatch_event_target" "commercial-managament-lambda-event-targe
   rule      = aws_cloudwatch_event_rule.commercial_lambda_event_rule.name
   target_id = "CommercialManagementId"
   arn       = var.commercial-management-arn
+}
+resource "aws_cloudwatch_event_target" "risk-managament-lambda-event-target" {
+  rule      = aws_cloudwatch_event_rule.risk_lambda_event_rule.name
+  target_id = "RiskManagementId"
+  arn       = var.risk-management-arn
 }

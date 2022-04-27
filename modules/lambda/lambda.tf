@@ -83,6 +83,13 @@ resource "aws_lambda_permission" "allow_cloudwatch_trigger_commercial_lambda" {
   source_arn = var.cloudwatch-event-trigger-commercial-management-arn
   statement_id = "AllowInvokationFromCloudWatchEvent"
 }
+resource "aws_lambda_permission" "allow_cloudwatch_trigger_risk_lambda" {
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.risk_management_lambda.arn
+  principal = "events.amazonaws.com"
+  source_arn = var.cloudwatch-event-trigger-risk-management-arn
+  statement_id = "AllowInvokationFromCloudWatchEvent"
+}
 
 resource "aws_iam_policy" "lambda_logging" {
   name        = "lambda_logging"
